@@ -23,7 +23,7 @@ This Streamlit application allows users to upload PDF files, extract text from t
 
 1. **Clone the Repository**:
    ```bash
-   git clone [<your-github-repo-url>](https://github.com/RAHULMYDUR/RAG-Based-ChatBOT.git)
+   git clone https://github.com/RAHULMYDUR/RAG-Based-ChatBOT.git
    ```
 
 2. **Install Dependencies**:
@@ -61,6 +61,10 @@ This Streamlit application allows users to upload PDF files, extract text from t
 
 4. **View Chat History**:
    - The chat history will be displayed below the input field, showing your questions and the chatbot’s responses.
+
+## Live Application
+
+You can access the live version of the chatbot application [here](https://rag-based-chatbot-for-pdf.streamlit.app/). Test the app to see how it works with your PDF files and interact with the chatbot.
 
 ## Deployment
 
@@ -100,7 +104,6 @@ This Streamlit application allows users to upload PDF files, extract text from t
 ## Contributing
 
 Feel free to fork the repository and submit pull requests. Contributions and improvements are welcome!
-
 
 ## Contact
 
