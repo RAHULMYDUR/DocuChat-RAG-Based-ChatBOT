@@ -23,17 +23,10 @@ This Streamlit application allows users to upload PDF files, extract text from t
 
 1. **Clone the Repository**:
    ```bash
-   git clone <your-github-repo-url>
-   cd <repository-directory>
+   git clone [<your-github-repo-url>](https://github.com/RAHULMYDUR/RAG-Based-ChatBOT.git)
    ```
 
-2. **Create a Virtual Environment** (optional but recommended):
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   ```
-
-3. **Install Dependencies**:
+2. **Install Dependencies**:
    ```bash
    pip install -r requirements.txt
    ```
@@ -108,10 +101,7 @@ This Streamlit application allows users to upload PDF files, extract text from t
 
 Feel free to fork the repository and submit pull requests. Contributions and improvements are welcome!
 
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
-For any questions or issues, please open an issue on the GitHub repository or contact the maintainer at [your-email@example.com].
+For any questions or issues, please open an issue on the GitHub repository or contact the maintainer at rahulmydur@gmail.com.
