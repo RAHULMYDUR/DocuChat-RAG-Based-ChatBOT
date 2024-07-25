@@ -38,7 +38,7 @@ def generate_response(retrieved_chunks, user_query, api_key):
 
     response = requests.post(url, headers={"Content-Type": "application/json"}, data=json.dumps(data), verify=False)
     response.raise_for_status()
-
+    
     # Print the response JSON for debugging
     response_json = response.json()
     print(json.dumps(response_json, indent=2))
