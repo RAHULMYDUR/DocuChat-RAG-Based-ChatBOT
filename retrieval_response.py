@@ -1,8 +1,16 @@
+from sklearn.feature_extraction.text import TfidfVectorizer
 import requests
 import json
-from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+import faiss
 
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
+
+def retrieve_relevant_chunks(index, chunks, query, vectorizer, top_n=3):
+    query_vec = vectorizer.transform([query]).toarray()
+    assert query_vec.shape[1] == index.d, f"Query vector dimension {query_vec.shape[1]} does not match index dimension {index.d}"
+    distances, indices = index.search(query_vec, top_n)
+    return [chunks[i] for i in indices[0]]
 
 def generate_response(retrieved_chunks, user_query, api_key):
     prompt = f'''
@@ -35,9 +43,9 @@ def generate_response(retrieved_chunks, user_query, api_key):
     response_json = response.json()
     print(json.dumps(response_json, indent=2))
 
-    # Check the actual structure of the response and adjust accordingly
+    # Adjust based on actual response structure
     try:
-        generated_content = response_json["candidates"][0]["content"]["parts"][0]["text"]
+        generated_content = response_json.get("choices", [{}])[0].get("text", "No content found")
     except KeyError as e:
         raise ValueError(f"Unexpected response structure: {e}")
 
