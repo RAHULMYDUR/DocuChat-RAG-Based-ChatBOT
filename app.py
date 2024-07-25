@@ -31,10 +31,45 @@ def generate_response(prompt, api_key):
     response = f"Response to: {prompt}"
     return response
 
-# Display chat messages
+# HTML and CSS for fixed input and chat history
+st.markdown("""
+    <style>
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+            overflow: hidden;
+        }
+        .chat-history {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+        .chat-input {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: white;
+            padding: 10px;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+    <div class="chat-container">
+        <div class="chat-history">
+            <!-- Chat history will be displayed here -->
+        </div>
+        <div class="chat-input">
+            <!-- Input field and button will be here -->
+        </div>
+    </div>
+""", unsafe_allow_html=True)
+
+# Display chat messages in chat history
+chat_history_html = ""
 for message in st.session_state.chat_history:
-    with st.chat_message(message["role"]):
-        st.write(message["content"])
+    role_class = "user" if message["role"] == "user" else "assistant"
+    chat_history_html += f'<div class="{role_class}">{message["content"]}</div>'
+st.markdown(f'<div class="chat-history">{chat_history_html}</div>', unsafe_allow_html=True)
 
 # Handle user input and response
 with st.container():
@@ -52,6 +87,8 @@ with st.container():
 
 # Display new messages
 if st.session_state.chat_history:
+    chat_history_html = ""
     for message in st.session_state.chat_history:
-        with st.chat_message(message["role"]):
-            st.write(message["content"])
+        role_class = "user" if message["role"] == "user" else "assistant"
+        chat_history_html += f'<div class="{role_class}">{message["content"]}</div>'
+    st.markdown(f'<div class="chat-history">{chat_history_html}</div>', unsafe_allow_html=True)
