@@ -1,51 +1,65 @@
 import streamlit as st
+from streamlit_chat import message
+from streamlit_extras.colored_header import colored_header
+from streamlit_extras.add_vertical_space import add_vertical_space
 from file_handler import extract_text_from_pdf
 from processing import chunk_documents, vectorize_chunks, store_vectors_in_faiss
 from retrieval_response import retrieve_relevant_chunks, generate_response
 
-# Define your API key here
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
 
- # Main container for chat history
-st.title("RAG-based Chatbot")
+# App title and configuration
+st.set_page_config(page_title="RAG-based Chatbot")
 
-user_query = st.text_input("Ask a question:")
+# Sidebar for file upload
+with st.sidebar:
+    st.title("Upload File")
+    uploaded_file = st.file_uploader("Upload a PDF file", type=["pdf"])
 
-def main():
-    st.sidebar.title("Upload File")
-    uploaded_file = st.sidebar.file_uploader("Upload a PDF file", type=["pdf"])
+# Initialize session state
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = [{"role": "assistant", "content": "How may I assist you today?"}]
+if "user_query" not in st.session_state:
+    st.session_state.user_query = ""
 
-    if uploaded_file is not None:
-        st.sidebar.write(f"File uploaded: {uploaded_file.name}")
+# Function to get user input
+def get_text():
+    return st.text_input("Type your question here:", "", key="input")
 
-        # Read the PDF file
-        documents = extract_text_from_pdf(uploaded_file)
+# Function to generate response
+def generate_response(prompt, api_key):
+    # Generate a response using the API
+    # Replace this with your actual response generation logic
+    response = f"Response to: {prompt}"
+    return response
 
-        # Convert documents to chunks and vectors
-        chunks = chunk_documents(documents)
-        vectors, vectorizer = vectorize_chunks(chunks)
+# Layout containers for input and response
+input_container = st.container()
+response_container = st.container()
 
-        # Store vectors in FAISS
-        index = store_vectors_in_faiss(vectors)
+# Display chat history in response container
+with response_container:
+    colored_header(label='', description='', color_name='blue-30')
+    add_vertical_space(1)
+    for chat in st.session_state.chat_history:
+        message(chat['content'], is_user=(chat['role'] == 'user'))
 
-        # Initialize session state for chat history
-        if 'chat_history' not in st.session_state:
-            st.session_state.chat_history = []
-      
+# Handle user input and response
+with input_container:
+    user_input = get_text()
+    if st.button("Get Answer") and user_input:
+        # Add user query to chat history
+        st.session_state.chat_history.append({"role": "user", "content": user_input})
 
-        if st.button("Get Answer"):
-            if user_query:
-                retrieved_chunks = retrieve_relevant_chunks(index, chunks, user_query, vectorizer)
-                response = generate_response("\n\n".join(retrieved_chunks), user_query, api_key)
-                
-                # Append the question and answer to the chat history
-                st.session_state.chat_history.append({"question": user_query, "answer": response})
+        # Generate response
+        response = generate_response(user_input, api_key)
+        st.session_state.chat_history.append({"role": "assistant", "content": response})
 
-        # Display the chat history
-        for chat in st.session_state.chat_history:
-            st.write(f"**You:** {chat['question']}")
-            st.write(f"**Chatbot:** {chat['answer']}")
-            st.write("")
+        # Clear user input
+        st.session_state.user_query = ""
 
-if __name__ == "__main__":
-    main()
+# Re-display chat history to reflect new messages
+with response_container:
+    add_vertical_space(1)
+    for chat in st.session_state.chat_history:
+        message(chat['content'], is_user=(chat['role'] == 'user'))
