@@ -7,7 +7,7 @@ from retrieval_response import retrieve_relevant_chunks, generate_response
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
 
 # Main container for chat history
-        st.title("RAG-based Chatbot")
+st.title("RAG-based Chatbot")
 
 def main():
     st.sidebar.title("Upload File")
