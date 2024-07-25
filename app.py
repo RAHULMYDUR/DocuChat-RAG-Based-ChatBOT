@@ -6,89 +6,62 @@ from retrieval_response import retrieve_relevant_chunks, generate_response
 # Define your API key here
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
 
-# App title and configuration
-st.set_page_config(page_title="RAG-based Chatbot")
 
-# Sidebar for file upload
-with st.sidebar:
-    st.title("Upload File")
-    uploaded_file = st.file_uploader("Upload a PDF file", type=["pdf"])
+def main():
+    st.sidebar.title("Upload File")
+    uploaded_file = st.sidebar.file_uploader("Upload a PDF file", type=["pdf"])
 
-# Initialize session state
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = [{"role": "assistant", "content": "How may I assist you today?"}]
-if "user_query" not in st.session_state:
-    st.session_state.user_query = ""
+    if uploaded_file is not None:
+        st.sidebar.write(f"File uploaded: {uploaded_file.name}")
 
-# Function to get user input
-def get_text():
-    return st.text_input("Type your question here:", "", key="input")
+        # Read the PDF file
+        documents = extract_text_from_pdf(uploaded_file)
 
-# Function to generate response
-def generate_response(prompt, api_key):
-    # Generate a response using the API
-    # Replace this with your actual response generation logic
-    response = f"Response to: {prompt}"
-    return response
+        # Convert documents to chunks and vectors
+        chunks = chunk_documents(documents)
+        vectors, vectorizer = vectorize_chunks(chunks)
 
-# HTML and CSS for fixed input and chat history
-st.markdown("""
-    <style>
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: 80vh;
-            overflow: hidden;
-        }
-        .chat-history {
-            flex: 1;
-            overflow-y: auto;
-            padding: 10px;
-        }
-        .chat-input {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: white;
-            padding: 10px;
-            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
-        }
-    </style>
-    <div class="chat-container">
-        <div class="chat-history">
-            <!-- Chat history will be displayed here -->
-        </div>
-        <div class="chat-input">
-            <!-- Input field and button will be here -->
-        </div>
-    </div>
-""", unsafe_allow_html=True)
+        # Store vectors in FAISS
+        index = store_vectors_in_faiss(vectors)
 
-# Display chat messages in chat history
-chat_history_html = ""
-for message in st.session_state.chat_history:
-    role_class = "user" if message["role"] == "user" else "assistant"
-    chat_history_html += f'<div class="{role_class}">{message["content"]}</div>'
-st.markdown(f'<div class="chat-history">{chat_history_html}</div>', unsafe_allow_html=True)
+        # Initialize session state for chat history
+        if 'chat_history' not in st.session_state:
+            st.session_state.chat_history = []
 
-# Handle user input and response
-with st.container():
-    user_input = get_text()
-    if st.button("Get Answer") and user_input:
-        # Add user query to chat history
-        st.session_state.chat_history.append({"role": "user", "content": user_input})
+        if 'user_query' not in st.session_state:
+            st.session_state.user_query = ""
 
-        # Generate response
-        response = generate_response(user_input, api_key)
-        st.session_state.chat_history.append({"role": "assistant", "content": response})
+        # Layout Containers
+        st.title("RAG-based Chatbot")
 
-        # Clear user input
-        st.session_state.user_query = ""
+        # Input and Response Containers
+        input_container = st.container()
+        response_container = st.container()
 
-# Display new messages
-if st.session_state.chat_history:
-    chat_history_html = ""
-    for message in st.session_state.chat_history:
-        role_class = "user" if message["role"] == "user" else "assistant"
-        chat_history_html += f'<div class="{role_class}">{message["content"]}</div>'
-    st.markdown(f'<div class="chat-history">{chat_history_html}</div>', unsafe_allow_html=True)
+        # Function to get user input
+        def get_text():
+            input_text = st.text_input("You: ", "", key="input")
+            return input_text
+
+        # Display input container
+        with input_container:
+            user_input = get_text()
+            if st.button("Get Answer"):
+                if user_input:
+                    retrieved_chunks = retrieve_relevant_chunks(index, chunks, user_input, vectorizer)
+                    response = generate_response("\n\n".join(retrieved_chunks), user_input, api_key)
+
+                    # Append the question and answer to the chat history
+                    st.session_state.chat_history.append({"question": user_input, "answer": response})
+                    st.session_state.user_query = ""
+
+        # Display response container
+        with response_container:
+            if st.session_state['chat_history']:
+                for chat in st.session_state['chat_history']:
+                    st.write(f"**You:** {chat['question']}")
+                    st.write(f"**Chatbot:** {chat['answer']}")
+                    st.write("")
+
+if __name__ == "__main__":
+    main()
