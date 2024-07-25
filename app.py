@@ -39,8 +39,11 @@ def main():
     user_query = st.chat_input("Ask a question:")
     if user_query:
         if 'index' in st.session_state and 'vectorizer' in st.session_state and 'chunks' in st.session_state:
-            retrieved_chunks = retrieve_relevant_chunks(st.session_state.index, st.session_state.chunks, user_query, st.session_state.vectorizer)
-            response = generate_response("\n\n".join(retrieved_chunks), user_query, api_key)
+            try:
+                retrieved_chunks = retrieve_relevant_chunks(st.session_state.index, st.session_state.chunks, user_query, st.session_state.vectorizer)
+                response = generate_response("\n\n".join(retrieved_chunks), user_query, api_key)
+            except Exception as e:
+                response = f"An error occurred while generating the response: {str(e)}"
         else:
             response = "Please upload a PDF file first."
 
