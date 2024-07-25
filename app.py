@@ -13,7 +13,7 @@ from processing import chunk_documents, vectorize_chunks, store_vectors_in_faiss
 # Define your API key here
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
 
-st.title("DocuChat - RAG based Chatbot")
+st.title("DocuChat-RAG based Chatbot")
 
 def main():
     st.sidebar.title("Upload File")
