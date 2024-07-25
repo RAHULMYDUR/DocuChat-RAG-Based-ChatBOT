@@ -29,8 +29,8 @@ def main():
         if 'chat_history' not in st.session_state:
             st.session_state.chat_history = []
 
-        user_query = st.chat_input("Ask a question:")
-        if user_query:
+        user_query = st.text_input("Ask a question:")
+        if st.button("Get Answer") and user_query:
             retrieved_chunks = retrieve_relevant_chunks(index, chunks, user_query, vectorizer)
             response = generate_response("\n\n".join(retrieved_chunks), user_query, api_key)
             
@@ -39,8 +39,9 @@ def main():
 
         # Display the chat history
         for chat in st.session_state.chat_history:
-            st.chat_message("user", chat['question'])
-            st.chat_message("assistant", chat['answer'])
+            st.markdown(f"**You:** {chat['question']}")
+            st.markdown(f"**Chatbot:** {chat['answer']}")
+            st.markdown("---")  # Separator between chats
 
 if __name__ == "__main__":
     main()
