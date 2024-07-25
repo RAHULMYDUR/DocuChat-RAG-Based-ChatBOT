@@ -29,22 +29,32 @@ def main():
         if 'chat_history' not in st.session_state:
             st.session_state.chat_history = []
 
+        # Create a layout with two columns
+        col1, col2 = st.columns([3, 1])
 
-        user_query = st.text_input("Ask a question:")
+        with col1:
+            # Display the chat history
+            st.write("## Chat History")
+            for chat in st.session_state.chat_history:
+                st.write(f"**You:** {chat['question']}")
+                st.write(f"**Chatbot:** {chat['answer']}")
+                st.write("")
 
-        if st.button("Get Answer"):
-            if user_query:
-                retrieved_chunks = retrieve_relevant_chunks(index, chunks, user_query, vectorizer)
-                response = generate_response("\n\n".join(retrieved_chunks), user_query, api_key)
-                
-                # Append the question and answer to the chat history
-                st.session_state.chat_history.append({"question": user_query, "answer": response})
+        with col2:
+            # Chat input and button in a container at the bottom
+            st.write("## Ask a Question")
+            user_query = st.text_input("Type your question here:")
+            
+            if st.button("Get Answer"):
+                if user_query:
+                    retrieved_chunks = retrieve_relevant_chunks(index, chunks, user_query, vectorizer)
+                    response = generate_response("\n\n".join(retrieved_chunks), user_query, api_key)
+                    
+                    # Append the question and answer to the chat history
+                    st.session_state.chat_history.append({"question": user_query, "answer": response})
 
-        # Display the chat history
-        for chat in st.session_state.chat_history:
-            st.write(f"**You:** {chat['question']}")
-            st.write(f"**Chatbot:** {chat['answer']}")
-            st.write("")
+                    # Clear the text input after submission
+                    st.experimental_rerun()
 
 if __name__ == "__main__":
     main()
