@@ -6,6 +6,8 @@ from retrieval_response import retrieve_relevant_chunks, generate_response
 # Define your API key here
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
 
+st.title("RAG-based Chatbot")
+
 def main():
     st.sidebar.title("Upload File")
     uploaded_file = st.sidebar.file_uploader("Upload a PDF file", type=["pdf"])
@@ -26,8 +28,6 @@ def main():
         # Initialize session state for chat history
         if 'chat_history' not in st.session_state:
             st.session_state.chat_history = []
-
-        st.title("RAG-based Chatbot")
 
         user_query = st.text_input("Ask a question:")
 
