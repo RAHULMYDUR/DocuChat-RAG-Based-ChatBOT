@@ -6,6 +6,8 @@ from retrieval_response import retrieve_relevant_chunks, generate_response
 # Define your API key here
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
 
+ st.title("RAG-based Chatbot")
+
 def main():
     st.sidebar.title("Upload File")
     uploaded_file = st.sidebar.file_uploader("Upload a PDF file", type=["pdf"])
