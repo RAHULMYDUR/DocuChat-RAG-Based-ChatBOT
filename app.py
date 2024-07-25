@@ -43,6 +43,6 @@ if uploaded_file is not None:
 
     # Display chat history
     for chat in st.session_state.chat_history:
-        st.write(f"**You:** {chat['question']}")
-        st.write(f"**Chatbot:** {chat['answer']}")
+        st.write(f"**You:** {chat['question']}", width=400, key=chat['question'])
+        st.write(f"**Chatbot:** {chat['answer']}", width=400, key=chat['answer'])
         st.write("")
