@@ -1,7 +1,14 @@
 import streamlit as st
+
+# Try to import functions from retrieval_response
+try:
+    from retrieval_response import retrieve_relevant_chunks, generate_response
+except ImportError as e:
+    st.error(f"ImportError: {e}")
+    st.stop()
+
 from file_handler import extract_text_from_pdf
 from processing import chunk_documents, vectorize_chunks, store_vectors_in_faiss
-from retrieval_response import retrieve_relevant_chunks, generate_response
 
 # Define your API key here
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
