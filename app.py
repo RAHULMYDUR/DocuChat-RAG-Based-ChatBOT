@@ -6,6 +6,7 @@ from file_handler import extract_text_from_pdf
 from processing import chunk_documents, vectorize_chunks, store_vectors_in_faiss
 from retrieval_response import retrieve_relevant_chunks, generate_response
 
+# Define your API key here
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
 
 # App title and configuration
@@ -41,25 +42,26 @@ response_container = st.container()
 with response_container:
     colored_header(label='', description='', color_name='blue-30')
     add_vertical_space(1)
-    for chat in st.session_state.chat_history:
-        message(chat['content'], is_user=(chat['role'] == 'user'))
+    for i, chat in enumerate(st.session_state.chat_history):
+        message(chat['content'], is_user=(chat['role'] == 'user'), key=f"message_{i}")
 
 # Handle user input and response
 with input_container:
     user_input = get_text()
-    if st.button("Get Answer") and user_input:
-        # Add user query to chat history
-        st.session_state.chat_history.append({"role": "user", "content": user_input})
+    if st.button("Get Answer", key="get_answer"):
+        if user_input:
+            # Add user query to chat history
+            st.session_state.chat_history.append({"role": "user", "content": user_input})
 
-        # Generate response
-        response = generate_response(user_input, api_key)
-        st.session_state.chat_history.append({"role": "assistant", "content": response})
+            # Generate response
+            response = generate_response(user_input, api_key)
+            st.session_state.chat_history.append({"role": "assistant", "content": response})
 
-        # Clear user input
-        st.session_state.user_query = ""
+            # Clear user input
+            st.session_state.user_query = ""
 
 # Re-display chat history to reflect new messages
 with response_container:
     add_vertical_space(1)
-    for chat in st.session_state.chat_history:
-        message(chat['content'], is_user=(chat['role'] == 'user'))
+    for i, chat in enumerate(st.session_state.chat_history):
+        message(chat['content'], is_user=(chat['role'] == 'user'), key=f"message_re_{i}")
