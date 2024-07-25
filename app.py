@@ -31,9 +31,6 @@ def main():
         # Initialize session state for chat history
         if 'chat_history' not in st.session_state:
             st.session_state.chat_history = []
-
-        st.title("RAG-based Chatbot")
-
       
 
         if st.button("Get Answer"):
