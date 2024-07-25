@@ -6,10 +6,6 @@ from retrieval_response import retrieve_relevant_chunks, generate_response
 # Define your API key here
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
 
-st.title("RAG-based Chatbot")
-
-user_query = st.text_input("Ask a question:")
-
 def main():
     st.sidebar.title("Upload File")
     uploaded_file = st.sidebar.file_uploader("Upload a PDF file", type=["pdf"])
@@ -30,7 +26,28 @@ def main():
         # Initialize session state for chat history
         if 'chat_history' not in st.session_state:
             st.session_state.chat_history = []
+        
+        if 'user_query' not in st.session_state:
+            st.session_state.user_query = ""
 
+        # Layout with a fixed bottom input area
+        st.title("RAG-based Chatbot")
+
+        # Create a container for the main content
+        container = st.container()
+        with container:
+            # Display the chat history
+            st.write("## Chat History")
+            for chat in st.session_state.chat_history:
+                st.write(f"**You:** {chat['question']}")
+                st.write(f"**Chatbot:** {chat['answer']}")
+                st.write("")
+
+        # Input area fixed at the bottom
+        st.write("<style>div.stTextInput > div > input { position: fixed; bottom: 80px; width: 100%; } div.stButton > button { position: fixed; bottom: 10px; width: 100%; }</style>", unsafe_allow_html=True)
+
+        # User query input and button
+        user_query = st.text_input("Type your question here:", key="user_query", placeholder="Ask a question...")
         if st.button("Get Answer"):
             if user_query:
                 retrieved_chunks = retrieve_relevant_chunks(index, chunks, user_query, vectorizer)
@@ -38,12 +55,17 @@ def main():
                 
                 # Append the question and answer to the chat history
                 st.session_state.chat_history.append({"question": user_query, "answer": response})
+                
+                # Clear the text input after submission
+                st.session_state.user_query = ""
 
-        # Display the chat history
-        for chat in st.session_state.chat_history:
-            st.write(f"**You:** {chat['question']}")
-            st.write(f"**Chatbot:** {chat['answer']}")
-            st.write("")
+        # Display the chat history in case of re-run
+        with container:
+            st.write("## Chat History")
+            for chat in st.session_state.chat_history:
+                st.write(f"**You:** {chat['question']}")
+                st.write(f"**Chatbot:** {chat['answer']}")
+                st.write("")
 
 if __name__ == "__main__":
     main()
