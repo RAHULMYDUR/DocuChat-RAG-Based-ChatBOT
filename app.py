@@ -6,7 +6,7 @@ from retrieval_response import retrieve_relevant_chunks, generate_response
 # Define your API key here
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
 
-# Main container for chat history
+# Layout Containers
 st.title("RAG-based Chatbot")
 
 def main():
@@ -33,35 +33,35 @@ def main():
         if 'user_query' not in st.session_state:
             st.session_state.user_query = ""
 
-        
-        # Create columns for layout
-        chat_col, input_col = st.columns([3, 1])
 
-        with chat_col:
-            st.write("## Chat History")
-            for chat in st.session_state.chat_history:
-                st.write(f"**You:** {chat['question']}")
-                st.write(f"**Chatbot:** {chat['answer']}")
-                st.write("")
+        # Input and Response Containers
+        input_container = st.container()
+        response_container = st.container()
 
-        with input_col:
-            st.text_input("Type your question here:", key="user_query", placeholder="Ask a question...")
-            st.button("Get Answer", on_click=process_query)
+        # Function to get user input
+        def get_text():
+            input_text = st.text_input("You: ", "", key="input")
+            return input_text
 
-def process_query():
-    if st.session_state.user_query:
-        # Retrieve data from session state
-        user_query = st.session_state.user_query
-        
-        # Extract and process the data
-        retrieved_chunks = retrieve_relevant_chunks(index, chunks, user_query, vectorizer)
-        response = generate_response("\n\n".join(retrieved_chunks), user_query, api_key)
-        
-        # Append the question and answer to the chat history
-        st.session_state.chat_history.append({"question": user_query, "answer": response})
-        
-        # Clear the text input after submission
-        st.session_state.user_query = ""
+        # Display input container
+        with input_container:
+            user_input = get_text()
+            if st.button("Get Answer"):
+                if user_input:
+                    retrieved_chunks = retrieve_relevant_chunks(index, chunks, user_input, vectorizer)
+                    response = generate_response("\n\n".join(retrieved_chunks), user_input, api_key)
+
+                    # Append the question and answer to the chat history
+                    st.session_state.chat_history.append({"question": user_input, "answer": response})
+                    st.session_state.user_query = ""
+
+        # Display response container
+        with response_container:
+            if st.session_state['chat_history']:
+                for chat in st.session_state['chat_history']:
+                    st.write(f"**You:** {chat['question']}")
+                    st.write(f"**Chatbot:** {chat['answer']}")
+                    st.write("")
 
 if __name__ == "__main__":
     main()
