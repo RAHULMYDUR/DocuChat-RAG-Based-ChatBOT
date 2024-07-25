@@ -6,7 +6,26 @@ from processing import chunk_documents, vectorize_chunks, store_vectors_in_faiss
 # Define your API key here
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
 
-st.title("DocuChat-RAG based Chatbot")
+# Add custom CSS to make the title fixed
+st.markdown(
+    """
+    <style>
+    .title-container {
+        position: -webkit-sticky;
+        position: sticky;
+        top: 0;
+        background-color: white;
+        z-index: 1000;
+        padding: 10px 0;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# Create a container for the title
+with st.container():
+    st.markdown('<div class="title-container"><h1>DocuChat-RAG based Chatbot</h1></div>', unsafe_allow_html=True)
 
 def main():
     st.sidebar.title("Upload File")
