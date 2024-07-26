@@ -65,6 +65,8 @@ This Streamlit application allows users to upload PDF files, extract text from t
 ## Live Application
 
 You can access the live version of the chatbot application [here](https://rag-based-chatbot-for-pdf.streamlit.app/). Test the app to see how it works with your PDF files and interact with the chatbot.
+![image](https://github.com/user-attachments/assets/9a6ca425-a54a-49de-a626-dccbadd6d7f3)
+
 
 ## Deployment
 
