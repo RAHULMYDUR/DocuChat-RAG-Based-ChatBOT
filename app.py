@@ -6,21 +6,21 @@ from processing import chunk_documents, vectorize_chunks, store_vectors_in_faiss
 # Define your API key here
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
 
-def main():
-    st.sidebar.markdown(
-        """
-        <style>
-        .title {
-            font-size: 30px;
-            font-weight: bold;
-        }
-        </style>
-        """, 
-        unsafe_allow_html=True
-    )
+# Define logo URL
+logo_url = "https://tse4.mm.bing.net/th/id/OIP.MWsRR-VV9-Dz0aOk2JNH6AHaF_?rs=1&pid=ImgDetMain"  # Replace with your logo URL
 
-    st.sidebar.markdown('<p class="title">DocuChat</p>', unsafe_allow_html=True)
-    st.sidebar.subheader("RAG-based Chatbot")
+def main():
+    st.sidebar.markdown(f"""
+        <div style="text-align: center;">
+            <img src="{logo_url}" width="100" height="100">
+        </div>
+    """, unsafe_allow_html=True)
+    
+    st.sidebar.markdown("""
+        <h1 style="font-size: 24px; text-align: center;">DocuChat</h1>
+        <h2 style="font-size: 18px; text-align: center;">RAG-based Chatbot</h2>
+    """, unsafe_allow_html=True)
+
     st.sidebar.title("Upload File")
     uploaded_file = st.sidebar.file_uploader("Upload a PDF file", type=["pdf"])
 
