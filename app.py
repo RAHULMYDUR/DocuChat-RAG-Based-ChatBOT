@@ -7,7 +7,7 @@ from processing import chunk_documents, vectorize_chunks, store_vectors_in_faiss
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
 
 # Define logo URL
-logo_url = "https://tse4.mm.bing.net/th/id/OIP.MWsRR-VV9-Dz0aOk2JNH6AHaF_?rs=1&pid=ImgDetMain"  # Replace with your logo URL
+logo_url = "https://i.pinimg.com/originals/5f/24/38/5f24384a518a90e30a2f1107141ab9d4.gif"  # Replace with your logo URL
 
 def main():
     st.sidebar.markdown(f"""
