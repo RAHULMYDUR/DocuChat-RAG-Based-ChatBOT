@@ -4,7 +4,7 @@ from file_handler import extract_text_from_pdf
 from processing import chunk_documents, vectorize_chunks, store_vectors_in_faiss
 
 # Define your API key here
-api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
+api_key = st.secrets["gemini_api_key"]
 
 # Define logo URL
 logo_url = "https://i.pinimg.com/originals/5f/24/38/5f24384a518a90e30a2f1107141ab9d4.gif"  # Replace with your logo URL
