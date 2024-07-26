@@ -7,7 +7,19 @@ from processing import chunk_documents, vectorize_chunks, store_vectors_in_faiss
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
 
 def main():
-    st.sidebar.title("DocuChat")
+    st.sidebar.markdown(
+        """
+        <style>
+        .title {
+            font-size: 30px;
+            font-weight: bold;
+        }
+        </style>
+        """, 
+        unsafe_allow_html=True
+    )
+
+    st.sidebar.markdown('<p class="title">DocuChat</p>', unsafe_allow_html=True)
     st.sidebar.subheader("RAG-based Chatbot")
     st.sidebar.title("Upload File")
     uploaded_file = st.sidebar.file_uploader("Upload a PDF file", type=["pdf"])
@@ -55,8 +67,4 @@ def main():
         if chat['question']:
             with st.chat_message("user"):
                 st.write(chat['question'])
-        with st.chat_message("assistant"):
-            st.write(chat['answer'])
-
-if __name__ == "__main__":
-    main()
+        with
