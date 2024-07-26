@@ -67,4 +67,8 @@ def main():
         if chat['question']:
             with st.chat_message("user"):
                 st.write(chat['question'])
-        with
+        with st.chat_message("assistant"):
+            st.write(chat['answer'])
+
+if __name__ == "__main__":
+    main()
