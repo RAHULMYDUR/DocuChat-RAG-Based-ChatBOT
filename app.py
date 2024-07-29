@@ -68,9 +68,13 @@ def main():
                 st.write(chat['question'])
         with st.chat_message("assistant"):
             st.write(chat['answer'])
-    
-    # Watermark at the bottom
-    st.markdown("<div style='text-align: center; font-size: 12px; color: gray;'>Developed by Rahul Mydur</div>", unsafe_allow_html=True)
+
+    # Add watermark at the bottom of the sidebar
+    st.sidebar.markdown("""
+        <div style="text-align: center; margin-top: 20px; font-size: 12px; color: gray;">
+            developed by rahul mydur
+        </div>
+    """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
