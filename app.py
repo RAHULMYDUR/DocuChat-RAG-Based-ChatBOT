@@ -65,9 +65,9 @@ def main():
     for chat in st.session_state.chat_history:
         if chat['question']:
             with st.chat_message("user"):
-                st.write(chat['question'])
+                st.markdown(f"<div style='text-align: right; background-color: #E6F7FF; padding: 10px; border-radius: 10px; display: inline-block;'>{chat['question']}</div>", unsafe_allow_html=True)
         with st.chat_message("assistant"):
-            st.write(chat['answer'])
+            st.markdown(f"<div style='text-align: left; background-color: #F0F0F0; padding: 10px; border-radius: 10px; display: inline-block;'>{chat['answer']}</div>", unsafe_allow_html=True)
     
     # Watermark at the bottom
     st.markdown("<div style='text-align: center; font-size: 12px; color: gray;'>Developed by Rahul Mydur</div>", unsafe_allow_html=True)
