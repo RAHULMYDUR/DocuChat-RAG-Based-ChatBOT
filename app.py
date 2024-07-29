@@ -3,7 +3,6 @@ from retrieval_response import retrieve_relevant_chunks, generate_response
 from file_handler import extract_text_from_pdf
 from processing import chunk_documents, vectorize_chunks, store_vectors_in_faiss
 
-
 api_key = "AIzaSyCzdCOyd-7os-SRgbEolxtwEEgYYkjKpsM"
 
 # Define logo URL
@@ -69,6 +68,9 @@ def main():
                 st.write(chat['question'])
         with st.chat_message("assistant"):
             st.write(chat['answer'])
+    
+    # Watermark at the bottom
+    st.markdown("<div style='text-align: center; font-size: 12px; color: gray;'>Developed by Rahul Mydur</div>", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
