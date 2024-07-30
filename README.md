@@ -1,4 +1,4 @@
-# DocuChat - RAG based Chatbot Streamlit Application
+# DocuChat - RAG based Chatbot Streamlit Application using Google Gemini API
 
 This Streamlit application allows users to upload PDF files, extract text from these files, and interact with a Retrieval Augmented Generation (RAG)-based chatbot. The chatbot provides responses based on the content of the uploaded documents. The app uses a vector database (FAISS) for efficient retrieval and the Gemini API for generating responses.
 
