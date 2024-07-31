@@ -1,9 +1,20 @@
 import streamlit as st
+import logging
 from retrieval_response import retrieve_relevant_chunks, generate_response
 from file_handler import extract_text_from_pdf
 from processing import chunk_documents, vectorize_chunks, store_vectors_in_faiss
 
-api_key = st.secrets["gemini_api_key"]
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Attempt to load the API key
+try:
+    api_key = st.secrets["gemini_api_key"]
+    logger.info("API key loaded successfully.")
+except KeyError:
+    st.error("API key is missing. Please add it to the secrets.toml file.")
+    api_key = None
 
 # Define logo URL
 logo_url = "https://i.pinimg.com/originals/5f/24/38/5f24384a518a90e30a2f1107141ab9d4.gif"  # Replace with your logo URL
