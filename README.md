@@ -2,6 +2,10 @@
 
 This Streamlit application allows users to upload PDF files, extract text from these files, and interact with a Retrieval Augmented Generation (RAG)-based chatbot. The chatbot provides responses based on the content of the uploaded documents. The app uses a vector database (FAISS) for efficient retrieval and the Gemini API for generating responses.
 
+## Architecture Diagram
+
+![image](https://assets-global.website-files.com/6473d8d02a3cf26273f2787d/651bace425f4ab9a433ebb58_lza0eo3oqTb6m0PqYyqi2kvaE5FqV5DCjTilL54lzbaMyycn8OgUA9aVadwWKtFwSjcJnAzj7bFxTWuywBKKYzRle5yw7V51CrnUlmmulJyCnnIdKzi9CB4YgAiTo-XEzg7RQpKkfKLohOvcVFaj61E.png)
+
 ## Features
 
 - **PDF Upload**: Users can upload PDF files via the Streamlit file uploader.
