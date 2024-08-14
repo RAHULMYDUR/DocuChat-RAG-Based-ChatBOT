@@ -2,6 +2,8 @@ import requests
 import json
 from sklearn.metrics.pairwise import cosine_similarity
 
+api_key = st.secrets["gemini_api_key"]
+
 def retrieve_relevant_chunks(index, chunks, query, vectorizer, top_n=3):
     query_vec = vectorizer.transform([query]).toarray()
     distances, indices = index.search(query_vec, top_n)
